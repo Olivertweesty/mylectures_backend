@@ -1,7 +1,13 @@
 from flask import Flask
 from flask import jsonify
+import sqlite3
 
 app = Flask(__name__)
+conn = sqlite3.connect("mylectures.db")
+
+def createTable(cursor):
+    #create lectures table
+    cursor.execute()
 
 @app.route("/check_available",methods=["POST","GET"])
 def check_available():
@@ -23,4 +29,5 @@ def load_lessons():
     return jsonify(data)
 
 if __name__ == "__main__":
+
     app.run(debug=True,port=3000,host="0.0.0.0")
