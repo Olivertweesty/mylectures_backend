@@ -56,8 +56,9 @@ def upload_file():
 
 @app.route('/download/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
-    return send_from_directory(directory=uploads, filename=filename)
+    
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
+
 
 def createTable(conn):
     cursor = conn.cursor()
