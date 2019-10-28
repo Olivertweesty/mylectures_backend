@@ -133,6 +133,28 @@ def addLesson():
     insertintotable(sql, data)
 
     return jsonify({"response": "Lessons Added Successfully", "code": 200})
+
+@app.route("/editlesson", methods=["POST", "GET"])
+def addLesson():
+    lec_name = str(request.form.get("lecturer_name"))
+    lec_day = str(request.form.get("day"))
+    lec_stime = str(request.form.get("start_time"))
+    lec_etime = str(request.form.get("end_time"))
+    unit_name = str(request.form.get("unit_name"))
+    unit_code = str(request.form.get("unit_code"))
+    contacts = str(request.form.get("contacts"))
+    status = str(request.form.get("status"))
+    coordinates = str(request.form.get("coordinates"))    
+
+
+
+    sql = "INSERT INTO lessons(`day_of_week`,`str_time`,`st_time`,`subject`,`venue`,`lec_name`,`lec_tel`,`status`,`coodinates`) VALUES(?,?,?,?,?,?,?,?,?)"
+
+    data = (lec_day, lec_stime, lec_etime, unit_name, unit_code,
+            lec_name, contacts, status, coordinates)
+    insertintotable(sql, data)
+
+    return jsonify({"response": "Lessons Added Successfully", "code": 200})
 @app.route("/add_notices", methods=["POST"])
 def add_notices():
     fromw = str(request.form.get("from"))
@@ -155,6 +177,7 @@ def load_notes():
     data = selectData(sql)
     for item in data:
         notice = {}
+        notice["id"] = item[0]
         notice["unit_name"] = item[1]
         notice["lecturer_name"] = item[2]
         notice["doc_name"] = item[3]
@@ -170,6 +193,7 @@ def load_notices():
     data = selectData(sql)
     for item in data:
         notice = {}
+        notice["id"] = item[0]
         notice["from"] = item[1]
         notice["message"] = item[2]
         notice["date"] = item[3]
