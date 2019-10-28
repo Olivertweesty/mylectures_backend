@@ -1,5 +1,5 @@
-from flask import Flask,flash, request
-from flask import jsonify,send_from_directory
+from flask import Flask, flash, request
+from flask import jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 import os
 import sqlite3
@@ -10,14 +10,18 @@ UPLOAD_FOLDER = os.getcwd()
 app = Flask(__name__)
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 def conn():
     return sqlite3.connect("mylectures.db")
 
-def insertintotable(sql,data):
+
+def insertintotable(sql, data):
     con = conn()
     cursor = con.cursor()
-    cursor.execute(sql,data)
+    cursor.execute(sql, data)
     con.commit()
+
 
 def selectData(sql):
     cursor = conn().cursor()
@@ -25,8 +29,10 @@ def selectData(sql):
     data = data.fetchall()
     return data
 
+
 def allowed_file(filename):
-	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/uploaddocument', methods=['POST'])
 def upload_file():
@@ -35,34 +41,35 @@ def upload_file():
     unit_name = str(request.form.get("unit_name"))
     postdate = str(request.form.get("post_date"))
     if request.method == 'POST':
-    # check if the post request has the file part
+        # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
-            return jsonify({"response":"No file part"})
+            return jsonify({"response": "No file part"})
         file = request.files['file']
         if file.filename == '':
             flash('No file selected for uploading')
-            return jsonify({"response":"Please Select a file"})
+            return jsonify({"response": "Please Select a file"})
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            data = (unit_name,lec_name,filename,postdate)
+            data = (unit_name, lec_name, filename, postdate)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             flash('File successfully uploaded')
-            insertintotable(sql,data)
-            return jsonify({"response":"Successfull"})
+            insertintotable(sql, data)
+            return jsonify({"response": "Successfull"})
         else:
             flash('Allowed file types are txt, pdf, png, jpg, jpeg, gif')
-            return jsonify({"response":"Failed"})
+            return jsonify({"response": "Failed"})
+
 
 @app.route('/download/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
-    
+
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
 def createTable(conn):
     cursor = conn.cursor()
-    #create lectures table
+    # create lectures table
     lessons = """ CREATE TABLE IF NOT EXISTS lessons (
                         ID INTEGER PRIMARY KEY AUTOINCREMENT,
                         day_of_week text NOT NULL,
@@ -95,19 +102,35 @@ def createTable(conn):
     conn.commit()
 
 
-@app.route("/check_available",methods=["POST","GET"])
+@app.route("/check_available", methods=["POST", "GET"])
 def check_available():
     return "true"
 
-@app.route("/addlesson",methods=["POST","GET"])
+
+@app.route("/addlesson", methods=["POST", "GET"])
 def addLesson():
+    lec_name = str(request.form.get("lecturer_name"))
+    lec_day = str(request.form.get("day"))
+    lec_stime = str(request.form.get("start_time"))
+    lec_etime = str(request.form.get("end_time"))
+    unit_name = str(request.form.get("unit_name"))
+    unit_code = str(request.form.get("unit_code"))
+    contacts = str(request.form.get("contacts"))
+    status = str(request.form.get("status"))
+    coordinates = str(request.form.get("coordinates"))    
+
+
+
     sql = "INSERT INTO lessons(`day_of_week`,`str_time`,`st_time`,`subject`,`venue`,`lec_name`,`lec_tel`,`status`,`coodinates`) VALUES(?,?,?,?,?,?,?,?,?)"
-    data = ("Monday","12:00","14:00","Design & Implementation","SCC 106","D. Waema","254724487464","cancelled","-1.675845,35.45435")
-    insertintotable(sql,data)
 
-    return jsonify({"response":"Lessons Added Successfully","code":200})
+    data = (lec_day, lec_stime, lec_etime, unit_name, unit_code,
+            lec_name, contacts, status, coordinates)
+    insertintotable(sql, data)
 
-@app.route("/load_notes", methods = ["POST","GET"])
+    return jsonify({"response": "Lessons Added Successfully", "code": 200})
+
+
+@app.route("/load_notes", methods=["POST", "GET"])
 def load_notes():
     sql = "SELECT * FROM notes"
     notes = []
@@ -121,7 +144,8 @@ def load_notes():
         notes.append(notice)
     return jsonify(notes)
 
-@app.route("/load_notices", methods = ["POST","GET"])
+
+@app.route("/load_notices", methods=["POST", "GET"])
 def load_notices():
     sql = "SELECT * FROM notices"
     notices = []
@@ -135,7 +159,8 @@ def load_notices():
         notices.append(notice)
     return jsonify(notices)
 
-@app.route("/load_lessons",methods=["POST","GET"])
+
+@app.route("/load_lessons", methods=["POST", "GET"])
 def load_lessons():
     sql = "SELECT * FROM lessons"
     data = selectData(sql)
@@ -155,6 +180,7 @@ def load_lessons():
 
     return jsonify(lessons)
 
+
 if __name__ == "__main__":
     createTable(conn())
-    app.run(debug=True,port=3000,host="0.0.0.0")
+    app.run(debug=True, port=3000, host="0.0.0.0")
