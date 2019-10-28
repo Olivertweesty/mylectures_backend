@@ -135,7 +135,8 @@ def addLesson():
     return jsonify({"response": "Lessons Added Successfully", "code": 200})
 
 @app.route("/editlesson", methods=["POST", "GET"])
-def addLesson():
+def editLesson():
+    id = str(request.form.get("id"))
     lec_name = str(request.form.get("lecturer_name"))
     lec_day = str(request.form.get("day"))
     lec_stime = str(request.form.get("start_time"))
@@ -148,16 +149,16 @@ def addLesson():
 
 
 
-    sql = "INSERT INTO lessons(`day_of_week`,`str_time`,`st_time`,`subject`,`venue`,`lec_name`,`lec_tel`,`status`,`coodinates`) VALUES(?,?,?,?,?,?,?,?,?)"
+    sql = "UPDATE lessons SET day_of_week = ?,str_time = ?,st_time = ?,subject = ?,`venue = ?,lec_name = ?,lec_tel = ?,status = ?,coodinates = ? WHERE ID = ?"
 
     data = (lec_day, lec_stime, lec_etime, unit_name, unit_code,
-            lec_name, contacts, status, coordinates)
+            lec_name, contacts, status, coordinates,id)
     insertintotable(sql, data)
 
-    return jsonify({"response": "Lessons Added Successfully", "code": 200})
+    return jsonify({"response": "Lessons Editted Successfully", "code": 200})
 @app.route("/add_notices", methods=["POST"])
 def add_notices():
-    fromw = str(request.form.get("from"))
+    fromw = str(request.form.get("fromw"))
     subject = str(request.form.get("subject"))
     message = str(request.form.get("message"))
     p_date = str(request.form.get("p_date"))
@@ -167,8 +168,31 @@ def add_notices():
     insertintotable(sql,data)
     return jsonify({"response":"Notice Added Successfully"})
 
+@app.route("/remove_data", methods = ["POST"])
+def remove_data():
+    id = str(request.form.get("id"))
+    table = str(request.form.get("table"))
+    sql = "DELETE FROM {} WHERE ID = {}".format(table,id)
+    con = conn()
+    cursor = con.cursor()
+    cursor.execute(sql)
+    con.commit()
+    return jsonify({"response":"Data Deleted Successfull"})
+    
 
 
+@app.route("/edit_notices", methods=["POST"])
+def edit_notices():
+    id = str(request.form.get("id"))
+    fromw = str(request.form.get("fromw"))
+    subject = str(request.form.get("subject"))
+    message = str(request.form.get("message"))
+    p_date = str(request.form.get("p_date"))
+
+    sql = "UPDATE notices SET fromw = ?,message = ?,date = ?,subject = ? WHERE ID = ?"
+    data = (fromw,message,p_date,subject,id)
+    insertintotable(sql,data)
+    return jsonify({"response":"Notice Editted Successfully"})
 
 @app.route("/load_notes", methods=["POST", "GET"])
 def load_notes():
