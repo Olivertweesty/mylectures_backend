@@ -27,7 +27,7 @@ function fetch_lectures() {
     document.getElementById('lectures_table').style.display = "none";
     document.getElementById('lectures_tbody').innerHTML = "";
 
-    fetch('http://127.0.0.1:3000/load_lessons', {
+    fetch(window.location + 'load_lessons', {
         mode: 'no-cors'
     })
         .then(
@@ -78,34 +78,86 @@ function populate_lectures_table(lectures) {
     });
 }
 
-function add_notice() {
+function load_notices() {
+    fetch(window.location + 'load_notices', {
+        mode: 'no-cors'
+    })
+        .then(
+            function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem fetching notices. Status Code: ' + response.status);
 
+                    document.getElementById('notices_fetching_status').innerHTML = "<i>Problem encountered while fetching notices</i>";
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function (data) {
+                    console.log(data);
+                    if (data.length == 0) {
+                        document.getElementById('notices_fetching_status').innerHTML = "<i> No notices found</i>";
+                    } else {
+                        document.getElementById('notices_fetching_status').innerHTML = "";
+
+                        data.forEach(notice => {
+                            populate_notices(notice.date, notice.from, notice.message, notice.subject);
+                        });
+                    }
+                });
+            }
+        )
+        .catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
+}
+
+
+function populate_notices(date, from, message, subject) {
     let display = document.getElementById("notice_display");
-
-    let notice_from = "Waema";
-    let notice_subject = "Apology";
-    let notice_date = "12/08/2019";
-    let notice_message = "I'm very sorry";
 
     let card = `
         <div>
-            <div class="w3-card-4" style="width:75%;">
+            <div class="w3-card-4" style="width:45%;">
                 <header class="w3-container w3-blue" style="padding: 10px;">
                     <h3 style="display: inline;">Subject: </h3>
-                    <h4 style="display: inline;">${notice_subject}</h4>
+                    <h4 style="display: inline;">${subject}</h4>
                 </header>
 
                 <div class="w3-container" style="padding: 20px;">
-                    <h3 style="display: inline;">From: </h3> ${notice_from} <br><br>
-                    <h3 style="display: inline;">Date: </h3> ${notice_date} <br><br>
+                    <h3 style="display: inline;">From: </h3> ${from} <br><br>
+                    <h3 style="display: inline;">Date: </h3> ${date} <br><br>
 
                     <h3>Message:</h3>
-                    <p>${notice_message}</p>
+                    <p>${message}</p>
                 </div>
             </div>
-        </div>
+        </div> <br><br>
     `;
 
     display.innerHTML += card;
 }
-add_notice();
+
+
+function add_notice_modal() {
+    let modal_header = document.getElementById('modal_header');
+    let modal_body = document.getElementById('modal_body');
+
+    modal_header.innerHTML = "Add Notice";
+    modal_body.innerHTML = document.getElementById('add_notice_form').innerHTML;
+}
+
+function submit_notice(event) {
+    event.preventDefault()
+    let notice_form = document.getElementById("notice_form");
+
+    fetch(window.location + "add_notices", {
+        method: 'POST',
+        body: new FormData(notice_form)
+    })
+    .then(function (data) {
+        console.log('Request succeeded with JSON response: ', data);
+    })
+    .catch(function (error) {
+        console.log('Request failed', error);
+    });
+}

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="/static/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -27,7 +27,7 @@
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
             <li onclick="fetch_lectures()"><a data-toggle="tab" href="#menu1">Lectures</a></li>
             <li><a data-toggle="tab" href="#menu2">Upload document</a></li>
-            <li><a data-toggle="tab" href="#menu3">Notices</a></li>
+            <li onclick="load_notices()"><a data-toggle="tab" href="#menu3">Notices</a></li>
         </ul>
 
         <div class="tab-content">
@@ -82,7 +82,12 @@
             <!--MENU 3-->
             <div id="menu3" class="tab-pane fade">
                 <h3>Notices</h3>
-                <p>If you notice this notice, you'll notice that this notice is not worth noticing</p>
+
+                <button class="btn btn-primary btn-sm" style="float: right;" data-toggle="modal" data-target="#myModal"
+                    onclick="add_notice_modal()">Add Notice</button>
+                <br><br>
+
+                <div id="notices_fetching_status"></div>
 
                 <div id="notice_display"></div>
             </div>
@@ -110,6 +115,34 @@
         </div>
     </div>
 
+    <!--Add Notice Form-->
+    <div id="add_notice_form" style="display: none;">
+        <form id="notice_form">
+            <div class="form-group">
+                <label for="email">From:</label>
+                <input name="from" type="text" class="form-control" placeholder="From:">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Date:</label>
+                <input name="p_date" type="date" class="form-control" id="email" placeholder="Enter email" name="email">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Subject:</label>
+                <input name="subject" type="text" class="form-control" placeholder="Enter subject here">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Message:</label>
+                <input name="message" type="text" class="form-control" placeholder="Enter message here">
+            </div>
+
+            <button type="submit" class="btn btn-default" onclick="submit_notice(event)">Submit</button>
+        </form>
+    </div>
+
+    <!--Add Lecture Form-->
     <div id="add_lecture_form" style="display: none;">
         <form action="">
             <div class="form-group">
@@ -214,6 +247,6 @@
 
 </body>
 
-<script src="static/admin.js"></script>
+<script src="/static/admin.js"></script>
 
 </html>

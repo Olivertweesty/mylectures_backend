@@ -133,6 +133,19 @@ def addLesson():
     insertintotable(sql, data)
 
     return jsonify({"response": "Lessons Added Successfully", "code": 200})
+@app.route("/add_notices", methods=["POST"])
+def add_notices():
+    fromw = str(request.form.get("from"))
+    subject = str(request.form.get("subject"))
+    message = str(request.form.get("message"))
+    p_date = str(request.form.get("p_date"))
+
+    sql = "INSERT INTO notices(`fromw`,`message`,`date`,`subject`) VALUES(?,?,?,?)"
+    data = (fromw,message,p_date,subject)
+    insertintotable(sql,data)
+    return jsonify({"response":"Notice Added Successfully"})
+
+
 
 
 @app.route("/load_notes", methods=["POST", "GET"])
