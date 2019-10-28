@@ -1,5 +1,5 @@
 from flask import Flask, flash, request
-from flask import jsonify, send_from_directory
+from flask import jsonify, send_from_directory,render_template
 from werkzeug.utils import secure_filename
 import os
 import sqlite3
@@ -14,6 +14,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def conn():
     return sqlite3.connect("mylectures.db")
+
+
+@app.route("/", methods=["GET"])
+def mainM():
+    return render_template("admin.html")
 
 
 def insertintotable(sql, data):
