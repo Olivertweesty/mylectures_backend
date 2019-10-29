@@ -3,15 +3,14 @@ function edit_lecture(lecture) {
     document.getElementById('modal_header').innerHTML = "Edit Lecture";
     document.getElementById('modal_body').innerHTML = document.getElementById('edit_lecture_form').innerHTML;
 
-    document.getElementById('edit_lecture_id').value = lecture.childNodes[1].innerHTML;
-    document.getElementById('edit_lecture_name').value = lecture.childNodes[3].innerHTML;
-    document.getElementById('edit_lecture_code').value = lecture.childNodes[5].innerHTML;
-    document.getElementById('edit_lecture_class').value = lecture.childNodes[7].innerHTML;
-    // document.getElementById('edit_lecture_start').value = lecture.childNodes[9].innerHTML;
-    // document.getElementById('edit_lecture_end').value = lecture.childNodes[11].innerHTML;
-    // document.getElementById('edit_lecture_date').value = lecture.childNodes[13].innerHTML;
+    document.getElementById('edit_lecture_coodinates').value = lecture.childNodes[1].innerHTML;
+    document.getElementById('edit_lecture_day').value = lecture.childNodes[3].innerHTML;
+    document.getElementById('edit_lecture_lecturer').value = lecture.childNodes[5].innerHTML;
+    document.getElementById('edit_lecture_contact').value = lecture.childNodes[7].innerHTML;
+    // document.getElementById('edit_lecture_strtime').value = lecture.childNodes[9].innerHTML;
+    // document.getElementById('edit_lecture_sttime').value = lecture.childNodes[11].innerHTML;
+    document.getElementById('edit_lecture_unit').value = lecture.childNodes[13].innerHTML;
     document.getElementById('edit_lecture_venue').value = lecture.childNodes[15].innerHTML;
-    document.getElementById('edit_lecture_lecturer').value = lecture.childNodes[17].innerHTML;
 }
 
 function add_lecture_modal() {
