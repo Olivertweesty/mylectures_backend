@@ -209,3 +209,78 @@ function submit_edit_lecture(event) {
             console.log('Request failed', error);
         });
 }
+
+function fetch_notes() {
+    fetch(window.location + 'load_notes', {
+        mode: 'no-cors'
+    })
+        .then(
+            function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem fetching notes. Status Code: ' + response.status);
+
+                    document.getElementById('notices_fetching_status').innerHTML = "<i>Problem encountered while fetching notes</i>";
+                    document.getElementById("notes_table").style.display = "none";
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function (data) {
+                    console.log(data);
+                    if (data.length == 0) {
+                        document.getElementById('notes_fetching_status').innerHTML = "<i> No notes found</i>";
+                        document.getElementById("notes_table").style.display = "none";
+                    } else {
+                        document.getElementById('notes_fetching_status').innerHTML = "";
+                        document.getElementById("notes_table").style.display = "block";
+
+                        console.log(data);
+                        document.getElementById("notes_tbody").innerHTML = "";
+
+                        data.forEach(data => {
+                            populate_notes(data.id, data.unit_name, data.lecturer_name, data.doc_name, data.postdate);
+                        });
+                    }
+                });
+            }
+        )
+        .catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
+}
+
+function populate_notes(id, name, lecturer, document_name, postdate) {
+    let tbody = document.getElementById("notes_tbody");
+
+    tbody.innerHTML += `
+        <tr>
+            <td>${id}</td>
+            <td>${name}</td>
+            <td>${lecturer}</td>
+            <td>${document_name}</td>
+            <td>${postdate}</td>
+        </tr>
+    `;
+}
+
+function submit_document(event) {
+    event.preventDefault()
+    let doc_form = document.getElementById("document_form");
+
+    fetch(window.location + "uploaddocument", {
+        method: 'POST',
+        body: new FormData(doc_form)
+    })
+        .then(function (data) {
+            console.log('Request succeeded with JSON response: ', data);
+            document.getElementById("upload_a").value = "";
+            document.getElementById("upload_b").value = "";
+            document.getElementById("upload_c").value = "";
+            document.getElementById("upload_d").value = "";
+
+            fetch_notes();
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
+}

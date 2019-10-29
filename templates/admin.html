@@ -26,7 +26,7 @@
         <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
             <li onclick="fetch_lectures()"><a data-toggle="tab" href="#menu1">Lectures</a></li>
-            <li><a data-toggle="tab" href="#menu2">Upload document</a></li>
+            <li onclick="fetch_notes()"><a data-toggle="tab" href="#menu2">Upload document</a></li>
             <li onclick="load_notices()"><a data-toggle="tab" href="#menu3">Notices</a></li>
         </ul>
 
@@ -70,17 +70,32 @@
             <div id="menu2" class="tab-pane fade">
                 <h3>Upload document</h3>
 
-                <form action="">
-                    <input type="text" placeholder="Enter class" class="form-control"> <br>
+                <form id="document_form" action="">
+                    <div class="form-group">
+                        <label for="lec_name">Lecturer Name:</label>
+                        <input name="lec_name" id="upload_a" type="text" class="form-control" placeholder="Lecturer name">
+                    </div>
 
-                    <textarea placeholder="Enter short description" rows="4" cols="50"></textarea>
+                    <div class="form-group">
+                        <label for="unit_name">Unit Name:</label>
+                        <input name="unit_name" id="upload_b" type="text" class="form-control" placeholder="Unit name">
+                    </div>
 
-                    <input type="file" name="document_upload" class="form-control" multiple> <br>
-                    <input type="submit" class="btn">
+                    <div class="form-group">
+                        <label for="postdate">Date:</label>
+                        <input name="postdate" id="upload_c" type="date" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="file">Document:</label>
+                        <input name="file" id="upload_d" type="file" class="form-control">
+                    </div>
                 </form>
+                <button onclick="submit_document(event)">Submit</button>
 
                 <br><br>
-                <table id="notes_table">
+                <div id="notes_fetching_status"></div>
+                <table id="notes_table" style="display: none;" class="table table-striped table-responsive">
                     <thead>
                         <th>ID</th>
                         <th>Unit Name</th>
