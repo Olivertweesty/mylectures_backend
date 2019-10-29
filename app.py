@@ -5,7 +5,7 @@ import os
 import sqlite3
 
 
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif','js'])
 UPLOAD_FOLDER = os.getcwd()
 app = Flask(__name__)
 app.secret_key = "secret key"
@@ -42,9 +42,11 @@ def allowed_file(filename):
 @app.route('/uploaddocument', methods=['POST'])
 def upload_file():
     sql = "INSERT INTO notes(`unit_name`,`lecturer_name`,`doc_name`,`postdate`) VALUES(?,?,?,?)"
+
     lec_name = str(request.form.get("lecturer_name"))
     unit_name = str(request.form.get("unit_name"))
     postdate = str(request.form.get("post_date"))
+
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
