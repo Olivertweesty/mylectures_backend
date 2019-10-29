@@ -3,14 +3,24 @@ function edit_lecture(lecture) {
     document.getElementById('modal_header').innerHTML = "Edit Lecture";
     document.getElementById('modal_body').innerHTML = document.getElementById('edit_lecture_form').innerHTML;
 
-    document.getElementById('edit_lecture_coodinates').value = lecture.childNodes[1].innerHTML;
-    document.getElementById('edit_lecture_day').value = lecture.childNodes[3].innerHTML;
-    document.getElementById('edit_lecture_lecturer').value = lecture.childNodes[5].innerHTML;
-    document.getElementById('edit_lecture_contact').value = lecture.childNodes[7].innerHTML;
-    // document.getElementById('edit_lecture_strtime').value = lecture.childNodes[9].innerHTML;
-    // document.getElementById('edit_lecture_sttime').value = lecture.childNodes[11].innerHTML;
-    document.getElementById('edit_lecture_unit').value = lecture.childNodes[13].innerHTML;
-    document.getElementById('edit_lecture_venue').value = lecture.childNodes[15].innerHTML;
+    document.getElementById('edit_lecture_id').value = lecture.childNodes[1].innerHTML;
+    document.getElementById('edit_lecture_coodinates').value = lecture.childNodes[3].innerHTML;
+    document.getElementById('edit_lecture_day').value = lecture.childNodes[5].innerHTML;
+    document.getElementById('edit_lecture_lecturer').value = lecture.childNodes[7].innerHTML;
+    document.getElementById('edit_lecture_contact').value = lecture.childNodes[9].innerHTML;
+    // document.getElementById('edit_lecture_strtime').value = lecture.childNodes[11].innerHTML;
+    // document.getElementById('edit_lecture_sttime').value = lecture.childNodes[13].innerHTML;
+    document.getElementById('edit_lecture_unit').value = lecture.childNodes[15].innerHTML;
+    document.getElementById('edit_lecture_venue').value = lecture.childNodes[17].innerHTML;
+}
+
+function edit_notice_modal(from, subject, message) {
+    document.getElementById('modal_header').innerHTML = "Edit Notice";
+    document.getElementById('modal_body').innerHTML = document.getElementById('edit_notice_form').innerHTML;
+
+    document.getElementById("edit_notice_from").value = from;
+    document.getElementById("edit_notice_subject").value = subject;
+    document.getElementById("edit_notice_message").value = message;
 }
 
 function add_lecture_modal() {
@@ -63,6 +73,7 @@ function populate_lectures_table(lectures) {
     lectures.forEach(lecture => {
         tbody.innerHTML += `
             <tr onclick="edit_lecture(this)" data-toggle="modal" data-target="#myModal">
+                <td>${lecture.id}</td>
                 <td>${lecture.coodinates}</td>
                 <td>${lecture.day_of_week}</td>
                 <td>${lecture.lec_name}</td>
@@ -115,7 +126,7 @@ function populate_notices(date, from, message, subject) {
     let display = document.getElementById("notice_display");
 
     let card = `
-        <div>
+        <div  data-toggle="modal" data-target="#myModal" onclick="edit_notice_modal("${from}", "${subject}", "${message}")>
             <div class="w3-card-4" style="width:45%;">
                 <header class="w3-container w3-blue" style="padding: 10px;">
                     <h3 style="display: inline;">Subject: </h3>
@@ -153,10 +164,48 @@ function submit_notice(event) {
         method: 'POST',
         body: new FormData(notice_form)
     })
-    .then(function (data) {
-        console.log('Request succeeded with JSON response: ', data);
+        .then(function (data) {
+            console.log('Request succeeded with JSON response: ', data);
+            document.getElementById("close_modal").click();
+            load_notices();
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
+}
+
+function submit_lecture(event) {
+    event.preventDefault()
+    let lecture_form = document.getElementById("form_add_lecture");
+
+    fetch(window.location + "addlesson", {
+        method: 'POST',
+        body: new FormData(lecture_form)
     })
-    .catch(function (error) {
-        console.log('Request failed', error);
-    });
+        .then(function (data) {
+            console.log('Request succeeded with JSON response: ', data);
+            document.getElementById("close_modal").click();
+            fetch_lectures();
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
+}
+
+function submit_edit_lecture(event) {
+    event.preventDefault()
+    let lecture_form = document.getElementById("form_edit_lecture");
+
+    fetch(window.location + "editlesson", {
+        method: 'POST',
+        body: new FormData(lecture_form)
+    })
+        .then(function (data) {
+            console.log('Request succeeded with JSON response: ', data);
+            document.getElementById("close_modal").click();
+            fetch_lectures();
+        })
+        .catch(function (error) {
+            console.log('Request failed', error);
+        });
 }

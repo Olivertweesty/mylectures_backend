@@ -149,7 +149,7 @@ def editLesson():
 
 
 
-    sql = "UPDATE lessons SET day_of_week = ?,str_time = ?,st_time = ?,subject = ?,`venue = ?,lec_name = ?,lec_tel = ?,status = ?,coodinates = ? WHERE ID = ?"
+    sql = "UPDATE lessons SET day_of_week = ?,str_time = ?,st_time = ?,subject = ?,venue = ?,lec_name = ?,lec_tel = ?,status = ?,coodinates = ? WHERE ID = ?"
 
     data = (lec_day, lec_stime, lec_etime, unit_name, unit_code,
             lec_name, contacts, status, coordinates,id)
@@ -233,6 +233,7 @@ def load_lessons():
     lessons = []
     for dt in data:
         lesson = {}
+        lesson["id"] = dt[0]
         lesson["day_of_week"] = dt[1]
         lesson["str_time"] = dt[2]
         lesson["st_time"] = dt[3]
