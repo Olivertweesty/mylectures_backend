@@ -46,6 +46,7 @@
                 <div id="lectures_div">
                     <span id="lectures_fetching_status"></span>
 
+                    <small>Click on a lecture to edit it</small>
                     <table id="lectures_table" class="table table-striped table-responsive">
                         <tr>
                             <th>Coodinates</th>
@@ -95,7 +96,7 @@
     </div>
 
 
-    <!-- Add lecture form -->
+    <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
 
@@ -146,42 +147,47 @@
     <div id="add_lecture_form" style="display: none;">
         <form action="">
             <div class="form-group">
-                <label for="email">Unit Name:</label>
-                <input type="text" class="form-control" placeholder="Enter unit name">
+                <label for="coodinates">Coordinates:</label>
+                <input name="coodinates" type="text" class="form-control" placeholder="Enter Coordinates">
             </div>
 
             <div class="form-group">
-                <label for="email">Unit Code:</label>
-                <input type="text" class="form-control" placeholder="Enter unit code">
+                <label for="day">Day of the week:</label>
+                <input name="day" type="text" class="form-control" placeholder="Enter day of the week">
             </div>
 
             <div class="form-group">
-                <label for="email">Class:</label>
-                <input type="text" class="form-control" placeholder="Enter class">
+                <label for="lecturer">Lecturer:</label>
+                <input name="lecturer" type="text" class="form-control" placeholder="Enter lecturer name">
             </div>
 
             <div class="form-group">
-                <label for="email">Start Time:</label>
-                <input type="time" class="form-control" placeholder="Enter lecture start time">
+                <label for="contact">Contact:</label>
+                <input name="contact" type="text" class="form-control" placeholder="Enter lecture's contact">
             </div>
 
             <div class="form-group">
-                <label for="email">End Time:</label>
-                <input type="time" class="form-control" placeholder="Enter lecture end time">
+                <label for="str_time">Start Time:</label>
+                <input name="str_time" type="time" class="form-control" placeholder="Enter lecture start time">
             </div>
 
             <div class="form-group">
-                <label for="email">Date:</label>
-                <input type="date" class="form-control" id="email" placeholder="Enter email" name="email">
+                <label for="st_time">End Time:</label>
+                <input name="st_time" type="time" class="form-control" placeholder="Enter lecture end time">
             </div>
 
             <div class="form-group">
-                <label for="email">Venue:</label>
-                <input type="text" class="form-control" placeholder="Enter venue">
+                <label for="status">Status:</label>
+                <input name="status" type="text" class="form-control" id="email" placeholder="Enter status">
+            </div>
+
+            <div class="form-group">
+                <label for="unit">Unit:</label>
+                <input name="unit" type="text" class="form-control" placeholder="Enter unit name">
 
                 <div class="form-group">
-                    <label for="email">Lecturer:</label>
-                    <input type="text" class="form-control" placeholder="Enter lecturer name">
+                    <label for="email">Venue:</label>
+                    <input name="venue" type="text" class="form-control" placeholder="Enter venue">
                 </div>
             </div>
 
@@ -194,49 +200,47 @@
     <div id="edit_lecture_form" style="display: none;">
         <form action="">
             <div class="form-group">
-                <label for="email">ID:</label>
-                <input type="number" class="form-control" id="edit_lecture_id" disabled>
+                <label for="coodinates">Coordinates:</label>
+                <input id="edit_lecture_coodinates" name="coodinates" type="text" class="form-control" placeholder="Enter Coordinates">
             </div>
 
             <div class="form-group">
-                <label for="email">Unit Name:</label>
-                <input type="text" class="form-control" placeholder="Enter unit name" id="edit_lecture_name">
+                <label for="day">Day of the week:</label>
+                <input id="edit_lecture_day" name="day" type="text" class="form-control" placeholder="Enter day of the week">
             </div>
 
             <div class="form-group">
-                <label for="email">Unit Code:</label>
-                <input type="text" class="form-control" placeholder="Enter unit code" id="edit_lecture_code">
+                <label for="lecturer">Lecturer:</label>
+                <input id="edit_lecture_lecturer" name="lecturer" type="text" class="form-control" placeholder="Enter lecturer name">
             </div>
 
             <div class="form-group">
-                <label for="email">Class:</label>
-                <input type="text" class="form-control" placeholder="Enter class" id="edit_lecture_class">
+                <label for="contact">Contact:</label>
+                <input id="edit_lecture_contact" name="contact" type="text" class="form-control" placeholder="Enter lecture's contact">
             </div>
 
             <div class="form-group">
-                <label for="email">Start Time:</label>
-                <input type="time" class="form-control" placeholder="Enter lecture start time" id="edit_lecture_start">
+                <label for="str_time">Start Time:</label>
+                <input name="str_time" type="time" class="form-control" placeholder="Enter lecture start time">
             </div>
 
             <div class="form-group">
-                <label for="email">End Time:</label>
-                <input type="time" class="form-control" placeholder="Enter lecture end time" id="edit_lecture_end">
+                <label for="st_time">End Time:</label>
+                <input name="st_time" type="time" class="form-control" placeholder="Enter lecture end time">
             </div>
 
             <div class="form-group">
-                <label for="email">Date:</label>
-                <input type="date" class="form-control" id="email" placeholder="Enter email" name="email"
-                    id="edit_lecture_date">
+                <label for="status">Status:</label>
+                <input id="edit_lecture_status" name="status" type="text" class="form-control" id="email" placeholder="Enter status">
             </div>
 
             <div class="form-group">
-                <label for="email">Venue:</label>
-                <input type="text" class="form-control" placeholder="Enter venue" id="edit_lecture_venue">
+                <label for="unit">Unit:</label>
+                <input id="edit_lecture_unit" name="unit" type="text" class="form-control" placeholder="Enter unit name">
 
                 <div class="form-group">
-                    <label for="email">Lecturer:</label>
-                    <input type="text" class="form-control" placeholder="Enter lecturer name"
-                        id="edit_lecture_lecturer">
+                    <label for="email">Venue:</label>
+                    <input id="edit_lecture_venue" name="venue" type="text" class="form-control" placeholder="Enter venue">
                 </div>
             </div>
 
